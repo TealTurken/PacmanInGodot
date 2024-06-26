@@ -1,0 +1,87 @@
+[gd_scene load_steps=21 format=3 uid="uid://5ycch4w08t64"]
+
+[ext_resource type="Script" path="res://scripts/pacman.gd" id="1_1xsk7"]
+[ext_resource type="Texture2D" uid="uid://h71ud3s8c8n3" path="res://Assets/Pacman/Pacman_02.png" id="2_4xqrw"]
+[ext_resource type="Texture2D" uid="uid://dn5n35q1uw6no" path="res://Assets/Pacman/Pacman_03.png" id="2_mp2ao"]
+[ext_resource type="Texture2D" uid="uid://c6bux70f56d6a" path="res://Assets/Pacman/direction_pointer.png" id="3_dl22f"]
+[ext_resource type="Texture2D" uid="uid://bh35fl0wqe63" path="res://Assets/Pacman/Pacman_01.png" id="4_8r0qp"]
+[ext_resource type="Texture2D" uid="uid://bbgj23q7gam4f" path="res://Assets/Pacman/Pacman_Death_01.png" id="4_t65lk"]
+[ext_resource type="Texture2D" uid="uid://vxf8adm234y3" path="res://Assets/Pacman/Pacman_Death_02.png" id="5_4uja8"]
+[ext_resource type="Texture2D" uid="uid://coy4joj7785kn" path="res://Assets/Pacman/Pacman_Death_03.png" id="6_ylg03"]
+[ext_resource type="Texture2D" uid="uid://dc32pr4l0exr7" path="res://Assets/Pacman/Pacman_Death_04.png" id="7_2wtpn"]
+[ext_resource type="Texture2D" uid="uid://bghyra350hdga" path="res://Assets/Pacman/Pacman_Death_05.png" id="8_atue0"]
+[ext_resource type="Texture2D" uid="uid://bs55ta550rsj3" path="res://Assets/Pacman/Pacman_Death_06.png" id="9_jxom1"]
+[ext_resource type="Texture2D" uid="uid://c3dh7n3hysm7o" path="res://Assets/Pacman/Pacman_Death_07.png" id="10_s8e2u"]
+[ext_resource type="Texture2D" uid="uid://d30tk7uppyp8r" path="res://Assets/Pacman/Pacman_Death_08.png" id="11_35hik"]
+[ext_resource type="Texture2D" uid="uid://bm2447s8rp6kl" path="res://Assets/Pacman/Pacman_Death_09.png" id="12_jjx3p"]
+[ext_resource type="Texture2D" uid="uid://malqtxrid8h4" path="res://Assets/Pacman/Pacman_Death_10.png" id="13_yx12k"]
+[ext_resource type="Texture2D" uid="uid://2xj6ip5thdc6" path="res://Assets/Pacman/Pacman_Death_11.png" id="14_ld6jr"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hg5og"]
+radius = 7.0
+
+[sub_resource type="Animation" id="Animation_4u4ky"]
+resource_name = "Pacman_death"
+length = 2.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("4_t65lk"), ExtResource("5_4uja8"), ExtResource("6_ylg03"), ExtResource("7_2wtpn"), ExtResource("8_atue0"), ExtResource("9_jxom1"), ExtResource("10_s8e2u"), ExtResource("11_35hik"), ExtResource("12_jjx3p"), ExtResource("13_yx12k"), ExtResource("14_ld6jr"), null]
+}
+
+[sub_resource type="Animation" id="Animation_ltd5a"]
+resource_name = "Pacman_default"
+length = 0.2275
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.08, 0.16),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [ExtResource("4_8r0qp"), ExtResource("2_4xqrw"), ExtResource("2_mp2ao")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_h52fh"]
+_data = {
+"Pacman_death": SubResource("Animation_4u4ky"),
+"Pacman_default": SubResource("Animation_ltd5a")
+}
+
+[node name="Player" type="CharacterBody2D"]
+scale = Vector2(3, 3)
+collision_mask = 30
+script = ExtResource("1_1xsk7")
+speed = 220
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+rotation = 3.14159
+texture = ExtResource("4_t65lk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(4.52314e-07, 4.37101e-07)
+rotation = 3.14159
+shape = SubResource("CircleShape2D_hg5og")
+
+[node name="DirectionPointer" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(-10, 0)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("3_dl22f")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_h52fh")
+}

@@ -1,0 +1,144 @@
+[gd_scene load_steps=18 format=3 uid="uid://bcdnq58p15owa"]
+
+[ext_resource type="Texture2D" uid="uid://bwh3pnp6rcycn" path="res://Assets/Ghost/Ghost_Body_01.png" id="1_1i7gi"]
+[ext_resource type="Script" path="res://scripts/Ghost.gd" id="1_3rdqi"]
+[ext_resource type="Texture2D" uid="uid://dcgg14tac7mou" path="res://Assets/Ghost/Ghost_Eyes_Up.png" id="2_xa2r4"]
+[ext_resource type="Texture2D" uid="uid://gcljnvys5tll" path="res://Assets/Ghost/Ghost_Eyes_Down.png" id="2_y805b"]
+[ext_resource type="Texture2D" uid="uid://k486j4lctjb7" path="res://Assets/Ghost/Ghost_Body_02.png" id="4_p3iuo"]
+[ext_resource type="Texture2D" uid="uid://cvgpjfpg6poi1" path="res://Assets/Ghost/Ghost_Eyes_Left.png" id="4_v0jdw"]
+[ext_resource type="Texture2D" uid="uid://dw3xx2kpcbjrs" path="res://Assets/Ghost/Ghost_Eyes_Right.png" id="5_5txod"]
+[ext_resource type="Texture2D" uid="uid://bd4p43ndtu2v8" path="res://Assets/Ghost/Ghost_Vulnerable_Blue_01.png" id="8_kphl4"]
+[ext_resource type="Texture2D" uid="uid://blq70pt5we2b8" path="res://Assets/Ghost/Ghost_Vulnerable_Blue_02.png" id="9_7pr5i"]
+[ext_resource type="Texture2D" uid="uid://d0uu218xbjg0r" path="res://Assets/Ghost/Ghost_Vulnerable_White_02.png" id="10_qb17c"]
+[ext_resource type="Texture2D" uid="uid://cvto5sswde2ik" path="res://Assets/Ghost/Ghost_Vulnerable_White_01.png" id="11_woxsx"]
+[ext_resource type="Theme" uid="uid://p3o3gvkgp2ib" path="res://Resources/PacmanGame_theme.tres" id="12_gfiuy"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5at5s"]
+radius = 7.0
+height = 16.0
+
+[sub_resource type="Animation" id="Animation_7yn6d"]
+resource_name = "moving"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BodySprite:texture")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("1_1i7gi"), ExtResource("4_p3iuo")]
+}
+
+[sub_resource type="Animation" id="Animation_8o11s"]
+resource_name = "running_away"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BodySprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("8_kphl4"), ExtResource("9_7pr5i")]
+}
+
+[sub_resource type="Animation" id="Animation_owpdy"]
+resource_name = "running_away_blinking"
+length = 0.5
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BodySprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.125, 0.25, 0.375),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("8_kphl4"), ExtResource("11_woxsx"), ExtResource("9_7pr5i"), ExtResource("10_qb17c")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_oxcfe"]
+_data = {
+"moving": SubResource("Animation_7yn6d"),
+"running_away": SubResource("Animation_8o11s"),
+"running_away_blinking": SubResource("Animation_owpdy")
+}
+
+[node name="Ghost" type="Area2D"]
+scale = Vector2(2.5, 2.5)
+script = ExtResource("1_3rdqi")
+up = ExtResource("2_xa2r4")
+down = ExtResource("2_y805b")
+left = ExtResource("4_v0jdw")
+right = ExtResource("5_5txod")
+
+[node name="BodySprite" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("11_woxsx")
+
+[node name="EyeSprite" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_y805b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
+shape = SubResource("CapsuleShape2D_5at5s")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_oxcfe")
+}
+
+[node name="ScatterTimer" type="Timer" parent="."]
+wait_time = 8.0
+one_shot = true
+
+[node name="EatenTimeoutTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="UpdateChasingTargetPositionTimer" type="Timer" parent="."]
+wait_time = 0.2
+
+[node name="RunAwayTimer" type="Timer" parent="."]
+wait_time = 8.0
+one_shot = true
+
+[node name="AtHomeTimer" type="Timer" parent="."]
+wait_time = 8.0
+one_shot = true
+
+[node name="pointsLabel" type="Label" parent="."]
+visible = false
+texture_filter = 1
+offset_left = -19.2
+offset_top = -21.6
+offset_right = 20.8
+offset_bottom = 1.4
+theme = ExtResource("12_gfiuy")
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_font_sizes/font_size = 16
+text = "200"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="ScatterTimer" to="." method="_on_scatter_timer_timeout"]
+[connection signal="timeout" from="EatenTimeoutTimer" to="." method="_on_eaten_timeout_timer_timeout"]
+[connection signal="timeout" from="UpdateChasingTargetPositionTimer" to="." method="_on_update_chasing_target_position_timer_timeout"]
+[connection signal="timeout" from="RunAwayTimer" to="." method="_on_run_away_timer_timeout"]
+[connection signal="timeout" from="AtHomeTimer" to="." method="_on_at_home_timer_timeout"]
