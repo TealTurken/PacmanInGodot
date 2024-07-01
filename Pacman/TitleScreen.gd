@@ -1,7 +1,6 @@
 extends Control
 
-
-@onready var button = $Title/Button
+@onready var start_label = $Title/Button/StartLabel
 @onready var start_button_flash_timer = $StartButtonFlashTimer
 @onready var title = $Title
 @onready var get_ready_box = $"Get Ready Box"
@@ -27,6 +26,6 @@ func _on_button_pressed():
 	get_tree().change_scene_to_file("res://scenes/main.tscn")
 
 func _on_start_button_flash_timer_timeout():
-	button.visible = !button.visible
+	start_label.visible = !start_label.visible
 	start_button_flash_timer.start()
 	

@@ -20,6 +20,10 @@ var livesCount #actual track of lives, changes in code
 @onready var animation_player = $AnimationPlayer
 @onready var pacman_death_sound_player = $"../SoundPlayers/PacmanDeathSoundPlayer"
 @onready var power_pellet_sound_player = $"../SoundPlayers/PowerPelletSoundPlayer"
+@onready var background_music_sound_player = $"../SoundPlayers/BackgroundMusicSoundPlayer"
+@onready var tile_map = $"../TileMap"
+@onready var pellets = $"../Pellets"
+@onready var points_manager = $"../PointsManager"
 
 signal player_died_with_lives
 
@@ -91,6 +95,7 @@ func die(): #called by ghost that hit player
 	if livesCount > 0: #keep board progress, respawn Pacman
 		livesCount -= 1
 		ui.set_lives(livesCount)
+		ui.double_points_visible()
 		self.set_position(start_position)
 		animation_player.play("Pacman_default")
 		set_physics_process(true)
@@ -98,6 +103,12 @@ func die(): #called by ghost that hit player
 		get_tree().paused = false
 		player_died_with_lives.emit()
 		next_movement_direction = Vector2.ZERO
+		tile_map.modulate = Color(1.0, 1.0, 1.0)
+		background_music_sound_player.play()
+		ui.double_points_label.visible = false
+		points_manager.doublePoints = false
+		for ghost in pellets.Ghost_Array:
+			ghost.reset_ghost_parameters()
 		return
 	
 	if livesCount <= 0: #total reset of game

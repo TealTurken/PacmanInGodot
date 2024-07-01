@@ -1917,3 +1917,9 @@ stream = ExtResource("14_v0qjg")
 stream = ExtResource("15_plbmr")
 volume_db = -7.0
 autoplay = true
+
+[node name="PowerPelletsEatenInTimer" type="Timer" parent="."]
+wait_time = 8.0
+one_shot = true
+
+[connection signal="timeout" from="PowerPelletsEatenInTimer" to="Pellets" method="_on_timer_timeout"]

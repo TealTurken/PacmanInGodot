@@ -125,6 +125,27 @@ func scatter():
 	current_state = GhostState.SCATTER
 	navigation_agent_2d.target_position = movement_targets[current_scatter_index].position	
 
+func beserk():
+	reset_ghost_parameters()
+	scatter_timer.stop()
+	run_away_timer.stop()
+	at_home_timer.stop()
+	body_sprite.modulate = Color.WHITE
+	eye_sprite.hide()
+	animation_player.play("Beserk")
+	speed = 0
+	await get_tree().create_timer(8.0).timeout
+	body_sprite.position = Vector2(0.0, 0.0)
+	body_sprite.modulate = color
+	eye_sprite.show()
+	if self.name == "YellowGhost": eye_sprite.modulate = Color(0.0, 200.0, 200.0)
+	else: eye_sprite.modulate = Color(50.0, 50.0, 0.0)
+	eye_sprite.position = Vector2(0.0, 0.0)
+	animation_player.play("moving")
+	speed = 200
+	current_state = GhostState.CHASE
+	update_chasing_target_position_timer.start()
+
 func start_at_home():
 	at_home_timer.start()
 	current_state = GhostState.STARTING_AT_HOME
@@ -239,6 +260,7 @@ func reset_ghost_parameters():
 	body_sprite.show()
 	body_sprite.modulate = color
 	eye_sprite.show()
+	eye_sprite.modulate = Color(1.0, 1.0, 1.0)
 	speed = normalSpeed
 	animation_player.play("moving")
 	isBlinking = false

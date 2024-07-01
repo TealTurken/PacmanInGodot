@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://bcdnq58p15owa"]
+[gd_scene load_steps=19 format=3 uid="uid://bcdnq58p15owa"]
 
 [ext_resource type="Texture2D" uid="uid://bwh3pnp6rcycn" path="res://Assets/Ghost/Ghost_Body_01.png" id="1_1i7gi"]
 [ext_resource type="Script" path="res://scripts/Ghost.gd" id="1_3rdqi"]
@@ -16,6 +16,35 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5at5s"]
 radius = 7.0
 height = 16.0
+
+[sub_resource type="Animation" id="Animation_kg5b4"]
+resource_name = "Beserk"
+length = 0.1
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BodySprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(-5, 0), Vector2(5, 0), Vector2(-5, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("BodySprite:texture")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [ExtResource("8_kphl4"), ExtResource("9_7pr5i"), ExtResource("8_kphl4")]
+}
 
 [sub_resource type="Animation" id="Animation_7yn6d"]
 resource_name = "moving"
@@ -70,12 +99,14 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_oxcfe"]
 _data = {
+"Beserk": SubResource("Animation_kg5b4"),
 "moving": SubResource("Animation_7yn6d"),
 "running_away": SubResource("Animation_8o11s"),
 "running_away_blinking": SubResource("Animation_owpdy")
 }
 
 [node name="Ghost" type="Area2D"]
+position = Vector2(5, 0)
 scale = Vector2(2.5, 2.5)
 script = ExtResource("1_3rdqi")
 up = ExtResource("2_xa2r4")
@@ -85,7 +116,8 @@ right = ExtResource("5_5txod")
 
 [node name="BodySprite" type="Sprite2D" parent="."]
 texture_filter = 1
-texture = ExtResource("11_woxsx")
+position = Vector2(1.58722, 0)
+texture = ExtResource("9_7pr5i")
 
 [node name="EyeSprite" type="Sprite2D" parent="."]
 texture_filter = 1
