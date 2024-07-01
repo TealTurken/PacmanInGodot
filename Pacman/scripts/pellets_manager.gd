@@ -39,8 +39,6 @@ func on_pellet_eaten(should_allow_eating_ghosts: bool):
 	if should_allow_eating_ghosts:
 		PowerPelletsEatenInTimer += 1
 		power_pellets_eaten_in_timer.start()
-		if !ui.double_points_label.visible: 
-			ui.double_points_label.visible = true
 		
 		#SOUND
 		if !power_pellet_sound_player.playing:
@@ -48,8 +46,9 @@ func on_pellet_eaten(should_allow_eating_ghosts: bool):
 			background_music_sound_player.stop()
 			
 		#GHOST BESERK STATE
-		if PowerPelletsEatenInTimer == 1: #ghost berserk
+		if PowerPelletsEatenInTimer == 4: #ghost berserk
 			points_manager.doublePoints = true
+			ui.double_points_label.visible = true
 			tile_map.modulate = Color(180.0, 0.0, 0.0)
 			for ghost in Ghost_Array:
 				ghost.beserk()
